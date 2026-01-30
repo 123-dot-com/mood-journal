@@ -1,16 +1,20 @@
 #Importing required packages
-import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 import pandas as pd
 
 
 
+#Need to implement tkinter here in future
 def devPanel():
-    root = Tk()
-    frame = ttk.Frame(root, padding=10)
-    frame.grid()
-    ttk.Label(frame, text="superb_dev_settings").grid(column=0, row=0)
-    ttk.Button(frame, text="add word").grid(column=1, row=0)
+    emotions = pd.readcsv(Emotions.csv, ignore_index=true)
+    while(true):
+        choice = input ("1. Input emotion \n2. Edit existing emotions \n3. View list \n4. Import list \n5. Exit options")
+        match choice:
+            case 1:
+
+
+
 
 
 print("Hey friend, welcome to this journal thingy~!")
