@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 import pandas as pd
 import datetime as dt
+import matplotlib as mp
 
 
 
@@ -10,7 +11,7 @@ emotions = pd.read_csv("Emotions.csv", index_col=0)
 causes = pd.read_csv("Causes.csv", index_col=0)
 
 #Need to implement tkinter here in future
-def devPanel():
+def devPanel(): #Settings/developer panel to edit Emotions.csv file
     sort_dict = {'up':0,'middle':1,'down':2}
     while True:
         choice = int(input ("1. Input emotion \n2. View list \n3. Edit existing emotions \n4. Import list \nAny. Exit options \n"))
@@ -43,7 +44,7 @@ def devPanel():
                 return
 
 
-def findCause(emotion):
+def findCause(emotion): #To find the cause of the emotion, and reflection
     reflection = ""
     if emotion == "up":
         cause = input("That's great! What's making you feel that way? \n").lower()
@@ -61,7 +62,7 @@ def findCause(emotion):
     causes.sort_values(by=['time'], ascending=False)
 
 
-def reflect():
+def reflect(): #To let multi-line reflection
     print ("Continue to reflect here (type qq and press enter in a new line to exit): ")
     reflection = ""
     while True:
@@ -69,6 +70,9 @@ def reflect():
         if reflection.find("qq") != -1:
             return reflection[:len(reflection)-1]
 
+#FINISH ANALYSE
+def analyse(feeling, emotion):
+    choice = input("1. Check past trends for current emotion \n2. ")
 
 
 print("Hey friend, welcome to this journal thingy!")
@@ -81,6 +85,10 @@ if feeling == "1":
 try:
     emotion = emotions.at[feeling, "emotion"]
     findCause(emotion)
+
+    choice = input("Would you like to analyse your previous emotions? (y/n): ").lower()
+    if choice == "y":
+        analyse(feeling, emotion)
 
 except KeyError:
     choice = input("Feeling not recognised, do you want to add in settings? (y/n): ").lower()
