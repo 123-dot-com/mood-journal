@@ -82,11 +82,20 @@ python3 --version
 ```
 If not installed, install Python.
 
-If python is installed, but error happens while trying to run, python3 may not be installed, instead of:
+If python is installed, but error occurs while trying to run, python3 may not be installed, instead of:
 ```
 python3 journal.py
 ```
 You may run:
 ```
 python journal.py
+```
+Also check if pandas is installed 
+- Using pip:
+```
+pip install pandas
+```
+- Using npm (in case you don't want to make a virtual environment with venv):
+```
+npm install pandas
 ```
