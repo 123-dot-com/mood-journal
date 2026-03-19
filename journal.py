@@ -72,7 +72,7 @@ def reflect(): #To let multi-line reflection
 
 #FINISH ANALYSE
 def analyse(feeling, emotion):
-    choice = input("1. Check past trends for current emotion \n2. ")
+    choice = input("1. Check past trends for current emotion \n2. Plot mood over certian time")
 
 
 print("Hey friend, welcome to this journal thingy!")
