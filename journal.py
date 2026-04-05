@@ -2,8 +2,10 @@
 from tkinter import *
 from tkinter import ttk
 import pandas as pd
+import os
 import datetime as dt
 import matplotlib as mp
+
 
 
 emotions = pd.DataFrame()
@@ -24,7 +26,6 @@ def importFiles():
         causes.to_csv("Causes.csv")
 
 
-#Need to implement tkinter here in future
 def devPanel(): #Settings/developer panel to edit Emotions.csv file
     global emotions
     sort_dict = {'up':0,'middle':1,'down':2}
@@ -35,12 +36,12 @@ def devPanel(): #Settings/developer panel to edit Emotions.csv file
                 new_emotion = pd.DataFrame({"feeling": [input("Enter name of feeling: ").lower()],
                                "emotion": [input("Enter 'up' if good, 'middle' if okay, and 'down' if bad: ").lower()]})
                 emotions = pd.concat([emotions, new_emotion])
-                emotions.to_csv("Emotions.csv")
+                emotions.drop_duplicates().to_csv("Emotions.csv")
 
             case 2:
                 try:
-                    emotions.drop("Unnamed: 0", axis=1, inplace=True)
                     emotions = emotions.iloc[emotions['emotion'].map(sort_dict).sort_values().index]
+                    emotions.reset_index()
 
                 except:
                     print()
@@ -50,17 +51,32 @@ def devPanel(): #Settings/developer panel to edit Emotions.csv file
 
             case 3:
                 emotions.drop(int(input("Enter row number to delete: ")), inplace=True)
-                emotions.to_csv("Emotions.csv", index=False)
+                emotions.to_csv("Emotions.csv")
 
             case 4:
-                print("To import a list, name the csv file as 'Emotions.csv' and place it in this directory (folder in which this program is located). \nIf it isn't working, check the name, which is case sensitive and needs to be exact.")
+                print('''Names of csv files: 
+                    Emotions.csv - for the list of feelings and the respective emotion
+                    Causes.csv - for the list of feelings, their causes, the reflections, and the time at which it was felt
 
+                    To import a list, name the csv file as required and place it in this directory: ''', os.getcwd(),
+                    '''\nIf it isn't working, check the name, which is case sensitive and needs to be exact.
+                    Also, for correct displaying of current list, make sure that your csv files are formatted only as follows (make sure to delete any other columns:
+
+                    Emotions.csv:
+                    feeling, emotion
+
+                    Causes.csv:
+                    feeling, cause, reflection, time
+                    ''')
+            
             case _:
                 return
 
 
 def findCause(emotion): #To find the cause of the emotion, and reflection
+    global causes
     reflection = ""
+    print("Please answer in one word")
     if emotion == "up":
         cause = input("That's great! What's making you feel that way? \n").lower()
 
@@ -93,8 +109,7 @@ def analyse(feeling, emotion):
 
 importFiles()
 print("Hey friend, welcome to this journal thingy!")
-feeling = input("How are you doing today? (input 1 for dev panel) \n")
-feeling = feeling.lower()
+feeling = input("How are you doing today? (input 1 for dev panel) \n").lower()
 
 if feeling == "1":
     devPanel()
@@ -102,7 +117,7 @@ if feeling == "1":
 
 else:
     try:
-        cuurent_emotion = emotions.at[feeling, "emotion"]
+        current_emotion = emotions.at[feeling, "emotion"]
         findCause(emotion)
 
         choice = input("Would you like to analyse your previous emotions? (y/n): ").lower()
