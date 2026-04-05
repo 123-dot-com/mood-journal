@@ -8,18 +8,20 @@ import matplotlib as mp
 
 emotions = pd.DataFrame()
 causes = pd.DataFrame()
-try:
-    emotions = pd.read_csv("Emotions.csv", index_col=0)
-    causes = pd.read_csv("Causes.csv",)
 
-except:
-    print ("The required csv files are either missing or empty, creating new ones")
-    emotions = pd.DataFrame({"feeling":[], "emotion": []})
-    causes = pd.DataFrame({"feeling": [], "cause": [], "reflection":[], "time":[]})
+def importFiles():
+    try:
+        emotions = pd.read_csv("Emotions.csv", index_col=0)
+        causes = pd.read_csv("Causes.csv",)
 
-finally:
-    emotions.to_csv("Emotions.csv")
-    causes.to_csv("Causes.csv")
+    except:
+        print ("The required csv files are either missing or empty, creating new ones")
+        emotions = pd.DataFrame({"feeling":[], "emotion": []})
+        causes = pd.DataFrame({"feeling": [], "cause": [], "reflection":[], "time":[]})
+
+    finally:
+        emotions.to_csv("Emotions.csv")
+        causes.to_csv("Causes.csv")
 
 
 #Need to implement tkinter here in future
@@ -88,6 +90,8 @@ def analyse(feeling, emotion):
     choice = input("1. Check past trends for current emotion \n2. Plot mood over certian time")
 
 
+
+importFiles()
 print("Hey friend, welcome to this journal thingy!")
 feeling = input("How are you doing today? (input 1 for dev panel) \n")
 feeling = feeling.lower()
