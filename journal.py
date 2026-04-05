@@ -6,21 +6,34 @@ import datetime as dt
 import matplotlib as mp
 
 
+emotions = pd.DataFrame()
+causes = pd.DataFrame()
+try:
+    emotions = pd.read_csv("Emotions.csv", index_col=0)
+    causes = pd.read_csv("Causes.csv",)
 
-emotions = pd.read_csv("Emotions.csv", index_col=0)
-causes = pd.read_csv("Causes.csv", index_col=0)
+except:
+    print ("The required csv files are either missing or empty, creating new ones")
+    emotions = pd.DataFrame({"feeling":[], "emotion": []})
+    causes = pd.DataFrame({"feeling": [], "cause": [], "reflection":[], "time":[]})
+
+finally:
+    emotions.to_csv("Emotions.csv")
+    causes.to_csv("Causes.csv")
+
 
 #Need to implement tkinter here in future
 def devPanel(): #Settings/developer panel to edit Emotions.csv file
+    global emotions
     sort_dict = {'up':0,'middle':1,'down':2}
     while True:
         choice = int(input ("1. Input emotion \n2. View list \n3. Edit existing emotions \n4. Import list \nAny. Exit options \n"))
         match choice:
             case 1:
-                emotions.loc[len(emotions)] = [input("Enter name of feeling: ").lower(),
-                                            input("Enter 'up' if good, 'middle' if okay, and 'down' if bad: ").lower()]
-                emotions.drop_duplicates(inplace=True)
-                emotions.to_csv("Emotions.csv", index=False)
+                new_emotion = pd.DataFrame({"feeling": [input("Enter name of feeling: ").lower()],
+                               "emotion": [input("Enter 'up' if good, 'middle' if okay, and 'down' if bad: ").lower()]})
+                emotions = pd.concat([emotions, new_emotion])
+                emotions.to_csv("Emotions.csv")
 
             case 2:
                 try:
@@ -82,23 +95,25 @@ feeling = feeling.lower()
 if feeling == "1":
     devPanel()
 
-try:
-    emotion = emotions.at[feeling, "emotion"]
-    findCause(emotion)
 
-    choice = input("Would you like to analyse your previous emotions? (y/n): ").lower()
-    if choice == "y":
-        analyse(feeling, emotion)
+else:
+    try:
+        cuurent_emotion = emotions.at[feeling, "emotion"]
+        findCause(emotion)
 
-except KeyError:
-    choice = input("Feeling not recognised, do you want to add in settings? (y/n): ").lower()
-    if choice == "y":
-        devPanel()
+        choice = input("Would you like to analyse your previous emotions? (y/n): ").lower()
+        if choice == "y":
+            analyse(feeling, emotion)
 
-finally:
-    emotions.to_csv("Emotions.csv", index=False)
-    causes.to_csv("Causes.csv", index=False)
-    print("Thank you for updating your journal. Check back in whenever you need to log your mood again :)")
+    except KeyError:
+        choice = input("Feeling not recognised, do you want to add in settings? (y/n): ").lower()
+        if choice == "y":
+            devPanel()
+
+    finally:
+        emotions.to_csv("Emotions.csv", index=False)
+        causes.to_csv("Causes.csv", index=False)
+        print("Thank you for updating your journal. Check back in whenever you need to log your mood again :)")
 
 
 #Need to add the ability to check your reflections, emotions, and such
