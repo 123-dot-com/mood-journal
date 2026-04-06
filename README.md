@@ -69,18 +69,20 @@ sudo zypper install python-pip
 bash brew install python
 ```
 
-Then install pandas
+Then install pandas and matplotlib
 
 - Using pip:
 
   ```
   pip install pandas
+  pip install matplotlib
   ```
 
 - Using npm:
 
   ```
   npm install pandas
+  npm install matplotlib
   ```
 
 ## Troubleshooting
@@ -99,13 +101,13 @@ You may run:
 ```
 python3 journal.py
 ```
-Also check if pandas is installed 
+Also check if pandas and matplotlib are installed 
 - Using pip:
 ```
 pip list
 ```
 - Using npm:
 ```
-npm install pandas
+npm list
 ```
 
