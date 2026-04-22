@@ -37,17 +37,17 @@ python3 journal.py
 ## Installation
 - Debian:
 ```
-sudo apt install python3
-sudo apt install python3-pip
+sudo apt install python
+sudo apt install python-pip
 ```
 - Fedora:
 ```
-sudo dnf install python3
-sudo dnf install python3-pip
+sudo dnf install python
+sudo dnf install python-pip
 ```
 - Arch:
 ```
-sudo pacman -S python3
+sudo pacman -S python
 sudo pacman -S python-pip
 ```
 - CentOS/Red Hat:
