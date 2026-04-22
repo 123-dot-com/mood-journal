@@ -1,14 +1,14 @@
-# Smart Mood journal
-This is a mood journal that is pretty smart, but also entirely depends on you to be smart.
+# "Smart" Mood journal
+This is a mood journal that is barely smart.
 
 The aim of this mood journal is to help you understand your feelings, and analyse them over a period of time. 
 
 Using pandas, this journal will read your emotions, help you analyse what caused the emotion, and your general response over time.
 
-You can also edit the list of emotions, and the feeling associated with them.
+You can also edit the list of emotions, and the mood associated with them.
 
 ## Requirements
-Smart Mood Journal recommends Python 3.13 at least, however, python 2.x versions do work as well
+"Smart" Mood Journal recommends Python 3.13 at least, however, python 2.x versions do work as well
 
 - On Windows:
   Download the right version from the official python.org website (https://www.python.org/downloads/)
@@ -93,7 +93,7 @@ python --version
 ```
 If not installed, install Python.
 
-If python is installed, but error occurs while trying to run, python may not be installed, instead of:
+If python is installed, but error occurs while trying to run, python3 may have been installed, instead of:
 ```
 python journal.py
 ```
