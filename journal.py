@@ -18,8 +18,8 @@ def importFiles():
 
     except:
         print ("The required csv files are either missing or empty, creating new ones")
-        emotions = pd.DataFrame({"feeling":[], "emotion": []})
-        causes = pd.DataFrame({"feeling": [], "emotion": [], "cause": [], "reflection":[], "date": [], "time": []})
+        emotions = pd.DataFrame({"feeling":[], "mood": []})
+        causes = pd.DataFrame({"feeling": [], "mood": [], "cause": [], "reflection":[], "date": [], "time": []})
 
     finally:
         emotions.to_csv("Emotions.csv")
@@ -40,13 +40,13 @@ def devPanel(): #Settings/developer panel to edit Emotions.csv file
         match choice:
             case 1:
                 new_emotion = pd.DataFrame({"feeling": [input("Enter name of feeling: ").lower()],
-                               "emotion": [input("Enter 'up' if good, 'middle' if okay, and 'down' if bad: ").lower()]})
+                               "mood": [input("Enter 'up' if good, 'middle' if okay, and 'down' if bad: ").lower()]})
                 emotions = pd.concat([emotions, new_emotion])
                 emotions.drop_duplicates().to_csv("Emotions.csv")
 
             case 2:
                 try:
-                    emotions = emotions.iloc[emotions['emotion'].map(sort_dict).sort_values().index]
+                    emotions = emotions.iloc[emotions['mood'].map(sort_dict).sort_values().index]
                     emotions.reset_index()
 
                 except:
@@ -70,24 +70,24 @@ If it isn't working, check the name, which is case sensitive and needs to be exa
 Also, for correct displaying of current list, make sure that your csv files are formatted only as follows (make sure to delete any other columns:
 
 Emotions.csv:
-, feeling, emotion
+, feeling, mood
 
 Causes.csv:
-, feeling, emotion, cause, reflection, date, time
+, feeling, mood, cause, reflection, date, time
 ''')
             
             case _:
                 return
 
 
-def findCause(feeling, emotion): #To find the cause of the emotion, and reflection
+def findCause(feeling, mood): #To find the cause of the emotion, and reflection
     global causes
     reflection = ""
     print("Please answer in one word")
-    if emotion == "up":
+    if mood == "up":
         cause = input("That's great! What's making you feel that way? \n").lower()
 
-    elif emotion == "middle":
+    elif mood == "middle":
         cause = input("No problem, you don't always have to feel so good. What's making you feel so? \n").lower()
 
     else:
@@ -95,8 +95,9 @@ def findCause(feeling, emotion): #To find the cause of the emotion, and reflecti
 
     if input("Do you want to reflect on this? (y/n): ").lower() == 'y':
         reflection = reflect()
-
-    causes.loc[len(causes)] = [feeling, emotion, cause, reflection, dt.date.today(), dt.datetime.now().time())]
+    
+    new_row = pd.DataFrame({'feeling': [feeling], 'mood': [mood], 'cause': [cause], 'reflection': [reflection], 'date': [dt.date.today()], 'time': [dt.datetime.now().time()]})
+    causes = pd.concat([causes, new_row], ignore_index=True)
     causes.sort_values(by=['time'], ascending=False)
 
 
@@ -123,11 +124,11 @@ if current_feeling == "1":
 
 else:
     try:
-        current_emotion = emotions.at[current_feeling, "emotion"]
-        findCause(current_feeling, current_emotion)
+        current_mood = emotions.at[current_feeling, "mood"]
+        findCause(current_feeling, current_mood)
         choice = input("Would you like to analyse your previous emotions? (y/n): ").lower()
         if choice == "y":
-            analyse(current_feeling, current_emotion)
+            analyse(current_feeling, current_mood)
 
     except KeyError:
         choice = input("Feeling not recognised, do you want to add in settings? (y/n): ").lower()
