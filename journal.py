@@ -4,7 +4,8 @@ from tkinter import ttk
 import pandas as pd
 import os
 import datetime as dt
-import matplotlib as mp
+import matplotlib.pyplot as mp
+import numpy as np
 
 
 
@@ -12,6 +13,8 @@ emotions = pd.DataFrame()
 causes = pd.DataFrame()
 
 def importFiles():
+    global emotions
+    global causes
     try:
         emotions = pd.read_csv("Emotions.csv", index_col=0)
         causes = pd.read_csv("Causes.csv", index_col=0)
@@ -109,10 +112,62 @@ def reflect(): #To let multi-line reflection
         if reflection.find("qq") != -1:
             return reflection[:len(reflection)-1]
 
-#FINISH ANALYSE
-def analyse(feeling, emotion):
-    choice = input("1. Check counts for feelings \n2. Plot mood over certain time")
 
+def analyse(current_feeling, current_mood): #To analyse emotions, and moods
+    global emotions
+    global causes
+    while True:
+        choice = int(input('''
+1. Frequency of moods (bar graph)
+2. Mood breakdown by time on a specific day (pie chart)
+3. Previous causes for current emotion (list)
+4. Emotions felt around this time (list)
+5. History of moods over a time range (line graph)
+0. Exit 
+> '''))
+        try:
+            match choice:
+                case 1: 
+                    labels = ["Good", "Okay", "Bad"]
+                    data = causes['mood'].value_counts(sort=False)
+                    mp.bar(labels, data, color=['green', 'yellow', 'red'])
+                    mp.show()
+
+                case 2:
+                    print ("Enter dates in the following format: \n",dt.date.today())
+                    lower_lim = pd.to_datetime(input("Enter lower limit of dates to plot for (inclusive): ")).date()
+                    upper_lim = pd.to_datetime(input("Enter upper limit of dates to plot for (inclusive): ")).date()
+                    selected_rows = causes[(causes['date'] >= lower_lim) & (causes['date'] <= upper_lim)]
+                    data = causes['mood'].value_counts(sort=False)
+                    mp.pie(data, labels=['Good','Okay','Bad'], colors=['green', 'yellow', 'red'])
+                    mp.show()
+
+                case 3:
+                    selected_rows = causes[causes['feeling'] == current_feeling]
+                    data = selected_rows[['cause', 'reflection', 'date', 'time']]
+                    print (data)
+
+                case 4:
+                    lower_lim = (dt.datetime.now() - dt.timedelta(hours=2)).time()
+                    upper_lim = (dt.datetime.now() + dt.timedelta(hours=2)).time()
+                    selected_rows = causes[(causes['time'] >= lower_lim) & (causes['time'] <= upper_lim)]
+                    data = selected_rows[['feeling', 'cause', 'reflection']]
+                    print (data)
+
+                case 5:
+                    print ("Enter dates in the following format: \n",dt.date.today())
+                    lower_lim = pd.to_datetime(input("Enter lower limit of dates to plot for (inclusive): ")).date()
+                    upper_lim = pd.to_datetime(input("Enter upper limit of dates to plot for (inclusive): ")).date()
+                    selected_rows = causes[(causes['date'] >= lower_lim) & (causes['date'] <= upper_lim)]
+                    data_x = selected_rows['time']
+                    data_y = selected_rows['mood']
+                    mp.plot(data_x, data_y)
+                    mp.show()
+
+                case _:
+                    return
+        except:
+            print ("The Causes.csv file may be empty, therefore, analysis is not possible currently")
 
 
 importFiles()
@@ -139,6 +194,3 @@ else:
         emotions.to_csv("Emotions.csv")
         causes.to_csv("Causes.csv")
         print("Thank you for updating your journal. Check back in whenever you need to log your mood again :)")
-
-
-#Need to add the ability to check your reflections, emotions, and such
