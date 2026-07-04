@@ -11,10 +11,10 @@ You can also edit the list of emotions, and the mood associated with them.
 "Smart" Mood Journal recommends Python 3.13 at least, however, python 2.x versions do work as well
 
 - On Windows:
-  Download the right version from the official python.org website (https://www.python.org/downloads/)
+  Download the right version from the official [python.org website](https://www.python.org/downloads/)
 
 - On macOS:
-  Download Python from their official website(https://www.python.org/downloads/). This may also be done using Homebrew on the terminal.
+  Download Python from their official [website](https://www.python.org/downloads/). This may also be done using Homebrew on the terminal.
 
 - On Linux systems:
   Install python3 and pip (npm also works for downloading pandas) using the package manager of your distribution
