@@ -1,6 +1,4 @@
 #Importing required packages
-from tkinter import *
-from tkinter import ttk
 import pandas as pd
 import os
 import datetime as dt
