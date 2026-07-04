@@ -99,7 +99,6 @@ def findCause(feeling, mood): #To find the cause of the emotion, and reflection
     
     new_row = pd.DataFrame({'feeling': [feeling], 'mood': [mood], 'cause': [cause], 'reflection': [reflection], 'date': [dt.date.today()], 'time': [dt.datetime.now().time()]})
     causes = pd.concat([causes, new_row], ignore_index=True)
-    causes.sort_values(by=['time'], ascending=False)
 
 
 def reflect(): #To let multi-line reflection
